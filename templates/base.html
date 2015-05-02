@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body 
+      {
+        /*background-color: #99ccff;*/
+        padding-top: 20px;
+        padding-bottom: 60px;
+      }
+
+      /* Custom container */
+      .container 
+      {
+        /*background-color: white;*/
+        margin: 0 auto;
+        max-width: 1000px;
+      }
+      .container > hr {
+        margin: 60px 0;
+      }
+
+      /* Main marketing message and sign up button */
+      .jumbotron 
+      {
+        /*background-color: #99ccff;*/
+        margin: 40px 0px 20px 0px;
+        text-align: center;
+      }
+      .jumbotron h1 {
+        font-size: 100px;
+        line-height: 1;
+      }
+      .jumbotron .lead {
+        font-size: 24px;
+        line-height: 1.25;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+      }
+
+      /* Supporting marketing content */
+      .marketing {
+        margin: 60px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
+      }
+
+
+      /* Customize the navbar links to be fill the entire space of the .navbar */
+      .navbar .navbar-inner {
+        padding: 0;
+      }
+      .navbar .nav {
+        margin: 0;
+        display: table;
+        width: 100%;
+      }
+      .navbar .nav li {
+        display: table-cell;
+        width: 1%;
+        float: none;
+      }
+      .navbar .nav li a {
+        font-weight: bold;
+        text-align: center;
+        border-left: 1px solid rgba(255,255,255,.75);
+        border-right: 1px solid rgba(0,0,0,.1);
+      }
+      .navbar .nav li:first-child a {
+        border-left: 0;
+        border-radius: 3px 0 0 3px;
+      }
+      .navbar .nav li:last-child a {
+        border-right: 0;
+        border-radius: 0 3px 3px 0;
+      }
+    </style>
+    <link href="/static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
+    <script src="http://code.jquery.com/jquery-1.11.2.js"></script>
+
+
+  </head>
+
+  <body>
+
+    <div class="container">
+      
+      <!-- Jumbotron -->
+      <div class="jumbotron" style="background-color: #99ccff; border: 2px solid black; margin-top: 0">
+
+        <div class="clearfix">
+          <img class="pull-left" src="/static/images/header.gif"></li>
+          <h1>Peter Cox Associates</h1>
+        </div>
+
+        <p class="lead">Expertise available in materials engineering and many aspects of polymer technology.</p>
+
+          <!--
+        <p class="text-right">
+            <a href="mailto:drpeter.cox@pca-materials.com">drpeter.cox@pca-materials.com</a>
+        </p>
+        -->
+
+      </div>
+
+        <!--
+      <div class="row-fluid">
+        <div class="span12 text-right">
+            <a href="mailto:drpeter.cox@pca-materials.com">drpeter.cox@pca-materials.com</a>
+        </div>
+      </div>
+      -->
+
+      <div class="row-fluid">
+        <div class="span12 text-center">
+        <ul class="nav nav-tabs">
+          {% for (func, text) in [("index", "Home"),
+                                  ("news_and_bio", "News & Bio"),
+                                  ("multilayer_polymer_constructs", "Multilayer Constructs"),
+                                  ("multilayer_dies", "Multilayer Dies"),
+                                  ("monolayer_dies", "Monolayer Dies"),
+                                  ("commissioning", "Commissioning"),
+                                  ("expert_witness", "Expert Witness"),
+                                  ("contact", "Contact")] %}
+            <li{% if request.path == url_for(func) %} class="active"{% endif %}><a href="{{url_for(func)}}">{{text}}</a></li>
+          {% endfor %}
+        </ul>
+        </div>
+
+      </div>
+
+      {% block body %}{% endblock %}
+
+
+
+      <hr>
+
+      <div class="footer">
+        <p>&copy; Peter Cox Associates 2013</p>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/bootstrap/js/jquery.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-button.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-typeahead.js"></script>
+
+  </body>
+</html>
