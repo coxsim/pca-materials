@@ -17,15 +17,15 @@ markdown_dir = os.path.join(script_dir, "markdown")
 def index():
     return render_template("index.html")
 
-@app.route("/news-and-bio")
-def news_and_bio():
-    return render_template("news_bio.html")
-
 def markdown_page(markdown_file, title):
     with open(os.path.join(markdown_dir, markdown_file)) as f:
         content = Markup(markdown.markdown(f.read()))
 
     return render_template("markdown.html", title=title, content=content)
+
+@app.route("/news-and-bio")
+def news_and_bio():
+    return markdown_page("news_bio.md", "News & Bio")
 
 @app.route("/multilayer-polymer-constructs")
 def multilayer_polymer_constructs():
@@ -49,7 +49,7 @@ def expert_witness():
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html")
+    return markdown_page("contact.md", "Contact Details")
 
 if __name__ == "__main__":
     app.run()
