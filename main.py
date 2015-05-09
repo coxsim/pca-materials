@@ -6,6 +6,7 @@ import markdown
 from flask import Flask
 from flask import render_template
 from flask import Markup
+from flask import request
 
 app = Flask(__name__)
 app.debug = True
@@ -19,9 +20,13 @@ def index():
 
 def markdown_page(markdown_file, title):
     with open(os.path.join(markdown_dir, markdown_file)) as f:
-        content = Markup(markdown.markdown(f.read()))
+        markdown_content = f.read()
 
-    return render_template("markdown.html", title=title, content=content)
+    content = Markup(markdown.markdown(markdown_content))
+
+    edit = request.args.get('edit')
+
+    return render_template("markdown.html", title=title, content=content, markdown_content=markdown_content, edit=edit)
 
 @app.route("/news-and-bio")
 def news_and_bio():
