@@ -1,7 +1,7 @@
 Contact Details
 ===============
 
-Dr Peter Cox _CEng, DIC, ACGI, FIMM, MIMechE_
+Dr Peter Cox _CEng, DIC, ACGI, FIMMM, MIMechE_
 
 **E-Mail** : <drpeter.cox@pca-materials.com>
 
