@@ -6,11 +6,34 @@
         <div class="span1"></div>
         <div class="span10">
             {% if edit %}
-            <form role="form">
+
+            <script>
+$(function() {
+    $("#markdown_content").autoSave(function() {
+
+        $.post('{{url_for("save_draft")}}', $('#content_form').serialize()).done(function() {
+                $("#msg").text("Draft autosaved " + new Date());
+                $("#msg").addClass("alert-success");
+                $("#msg").removeClass("alert-error");
+            }).fail(function() {
+                $("#msg").text("Draft autosave failed " + new Date());
+                $("#msg").addClass("alert-error");
+                $("#msg").removeClass("alert-success");
+            })
+
+    }, 500);
+});
+            </script>
+
+            <div id="msg" class="alert alert-block">&nbsp;</div>
+
+            <form role="form" id="content_form" enctype="multipart/form-data">
+                <input hidden="true" id="url_from" name="url_from" value="{{request.url}}"/>
+                <input hidden="true" id="markdown_file" name="markdown_file" value="{{markdown_file}}"/>
                 <button type="submit" class="btn btn-default">Save</button>
                 <div class="form-group">
                   <!--<label for="comment">Comment:</label>-->
-                  <textarea class="form-control" rows="30" id="comment" style="width:100%">{{markdown_content}}</textarea>
+                  <textarea class="form-control" rows="30" id="markdown_content" name="markdown_content" style="width:100%; font-family: Courier">{{markdown_content}}</textarea>
                 </div>
                 <!--<textarea class="form-control" cols="100" rows="20">{{markdown_content}}</textarea>-->
             </form>
