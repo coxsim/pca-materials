@@ -9,7 +9,7 @@ Dr Peter Cox _CEng, DIC, ACGI, FIMMM, MIMechE_
 
 **Telephone - Mobile** : +44 (0)7713 608302
 
-**Social Media**: [LinkedIn](https://www.linkedin.com/profile/view?id=42568272&authType=NAME_SEARCH&authToken=xxgO&locale=en_US&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2Cidx%3A1-1-1%2CtarId%3A1431270590077%2Ctas%3Apeter%20cox)
+**Social Media**: [LinkedIn](https://www.linkedin.com/profile/view?id=42568272) [![LinkedIn](/static/images/linkedin-icon.png)](https://www.linkedin.com/profile/view?id=42568272)
 
 - - -
 
