@@ -38,6 +38,11 @@ $(function() {
                 <!--<textarea class="form-control" cols="100" rows="20">{{markdown_content}}</textarea>-->
             </form>
             {% else %}
+
+            {% if session.is_admin %}
+            <p><a href="{{request.url}}?edit=true">Edit</a></p>
+            {% endif %}
+
             {{content}}
             {% endif %}
         </div>

@@ -8,10 +8,11 @@ from flask import Flask
 from flask import render_template
 from flask import Markup
 from flask import request
+from flask import session
 
 app = Flask(__name__)
+app.secret_key = "12345" # for session cookies
 app.debug = True
-
 
 @app.before_first_request
 def setup_logging():
@@ -26,6 +27,22 @@ markdown_dir = os.path.join(script_dir, "markdown")
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+
+    if request.form:
+        username = request.form["username"]
+        session["username"] = username
+        session["is_admin"] = is_admin(username)
+        message = "Logged in as %s" % username
+    else:
+        message = None
+
+    return render_template("login.html", message=message)
+
+def is_admin(user):
+    return user == "coxsim"
 
 def markdown_page(markdown_file, title):
     with open(os.path.join(markdown_dir, markdown_file)) as f:

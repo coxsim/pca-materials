@@ -165,7 +165,11 @@
       <hr>
 
       <div class="footer">
-        <p>&copy; Peter Cox Associates 2013</p>
+        <p>&copy; Peter Cox Associates 2015</p>
+
+        {% if session.username %}
+        <p>Logged in as {{session.username}}, admin: {{session.is_admin}}</p>
+        {% endif %}
       </div>
 
     </div> <!-- /container -->

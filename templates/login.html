@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}PCA Materials{% endblock %}
+{% block body %}
+
+    <div class="row-fluid">
+        <div class="span12">
+          <h2>Login</h2>
+
+            {% if message %}
+            <div id="msg" class="alert alert-block alert-success">{{message}}</div>
+
+            {% endif %}
+
+            <form action="{{ url_for('login') }}" method="POST">
+                <label for="username">Username</label>
+                <input name="username" id="username"/>
+                <label for="password">Password</label>
+                <input name="password" id="password"/>
+                <button type="submit">Login</button>
+            </form>
+
+        </div>
+      </div>
+{% endblock %}
