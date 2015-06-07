@@ -11,7 +11,7 @@
 $(function() {
     $("#markdown_content").autoSave(function() {
 
-        $.post('{{url_for("save_draft")}}', $('#content_form').serialize()).done(function() {
+        $.post('{{url_for("save_draft", markdown_file=markdown_file)}}', $('#content_form').serialize()).done(function() {
                 $("#msg").text("Draft autosaved " + new Date());
                 $("#msg").addClass("alert-success");
                 $("#msg").removeClass("alert-error");
@@ -27,7 +27,7 @@ $(function() {
 
             <div id="msg" class="alert alert-block">&nbsp;</div>
 
-            <form role="form" id="content_form" enctype="multipart/form-data" action="{{url_for('save')}}" method="post">
+            <form role="form" id="content_form" enctype="multipart/form-data" action="{{url_for('save', markdown_file=markdown_file)}}" method="post">
                 <input hidden="true" id="url_from" name="url_from" value="{{request.url}}"/>
                 <input hidden="true" id="markdown_file" name="markdown_file" value="{{markdown_file}}"/>
                 <button type="submit" class="btn btn-default">Save</button>
@@ -42,6 +42,12 @@ $(function() {
                 <h3>History</h3>
                 <ul>
                     {% for (history_key, history_date) in history %}
+                    <li><a href="{{url_for('markdown_history', markdown_file=markdown_file, history_key=history_key)}}">{{history_date}}</a></li>
+                    {% endfor %}
+                </ul>
+                <h3>Drafts</h3>
+                <ul>
+                    {% for (history_key, history_date) in drafts %}
                     <li><a href="{{url_for('markdown_history', markdown_file=markdown_file, history_key=history_key)}}">{{history_date}}</a></li>
                     {% endfor %}
                 </ul>

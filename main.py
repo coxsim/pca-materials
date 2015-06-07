@@ -52,6 +52,9 @@ class DocumentStore(object):
 
     def list_history(self, key):
         key_history_dir = os.path.join(self.directory, "history", key)
+        if not os.path.isdir(key_history_dir):
+            raise StopIteration()
+
         for filename in os.listdir(key_history_dir):
             yield (filename, datetime.datetime.strptime(filename, TIMESTAMP_FORMAT))
 
@@ -88,6 +91,15 @@ def login():
 
     return render_template("login.html", message=message)
 
+@app.route("/logout")
+def logout():
+
+    del session["username"]
+    del session["is_admin"]
+    message = "Logged out"
+
+    return render_template("login.html", message=message)
+
 def is_admin(user):
     return user == "coxsim"
 
@@ -101,8 +113,10 @@ def markdown_page(markdown_file, title):
 
     if edit:
         history = markdown_store.list_history(markdown_file)
+        drafts = markdown_store.list_history("%s.draft" % markdown_file)
     else:
         history = None
+        drafts = None
 
     return render_template("markdown.html",
                            title=title,
@@ -110,7 +124,8 @@ def markdown_page(markdown_file, title):
                            markdown_file=markdown_file,
                            markdown_content=markdown_content,
                            edit=edit,
-                           history=history)
+                           history=history,
+                           drafts=drafts)
 
 @app.route("/news-and-bio")
 def news_and_bio():
@@ -140,34 +155,31 @@ def expert_witness():
 def contact():
     return markdown_page("contact.md", "Contact Details")
 
-@app.route("/save-draft", methods=['POST'])
-def save_draft():
-    markdown_file = request.form["markdown_file"]
+@app.route("/markdown/<markdown_file>/draft", methods=['POST'])
+def save_draft(markdown_file):
     markdown_content = request.form["markdown_content"]
-    #request.form['foo']
-    app.logger.info(markdown_file)
-    app.logger.info(markdown_content)
+    #app.logger.info(markdown_file)
+    #app.logger.info(markdown_content)
 
-    #markdown_dir
+    markdown_store.save("%s.draft" % markdown_file, markdown_content)
 
     return ""
 
-@app.route("/save", methods=['POST'])
-def save():
-    markdown_file = request.form["markdown_file"]
+@app.route("/markdown/<markdown_file>", methods=['POST'])
+def save(markdown_file):
     markdown_content = request.form["markdown_content"]
-    #request.form['foo']
-    app.logger.info(markdown_file)
+    #app.logger.info(markdown_file)
     #app.logger.info(markdown_content)
 
     markdown_store.save(markdown_file, markdown_content)
 
     return redirect(request.form["url_from"])
 
-@app.route("/history/<markdown_file>/<history_key>")
+@app.route("/markdown/<markdown_file>/<history_key>")
 def markdown_history(markdown_file, history_key):
     (save_time, markdown_content) = markdown_store.get_history(markdown_file, history_key)
     history = markdown_store.list_history(markdown_file)
+    drafts = markdown_store.list_history("%s.draft" % markdown_file)
 
     return render_template("markdown.html",
                            title="%s - saved - %s" % (markdown_file, save_time),
@@ -175,7 +187,8 @@ def markdown_history(markdown_file, history_key):
                            markdown_file=markdown_file,
                            markdown_content=markdown_content,
                            edit=True,
-                           history=history)
+                           history=history,
+                           drafts=drafts)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

@@ -165,11 +165,13 @@
       <hr>
 
       <div class="footer">
+        {% if session.username %}
+        <p>Logged in as {{session.username}}, admin: {{session.is_admin}}, <a href="{{url_for('logout')}}">logout</a></p>
+        <hr/>
+        {% endif %}
+
         <p>&copy; Peter Cox Associates 2015</p>
 
-        {% if session.username %}
-        <p>Logged in as {{session.username}}, admin: {{session.is_admin}}</p>
-        {% endif %}
       </div>
 
     </div> <!-- /container -->
