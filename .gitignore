@@ -1,2 +1,4 @@
 
 templates/base.html.gdoc
+
+*.pyc
