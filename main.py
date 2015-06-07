@@ -115,7 +115,7 @@ def markdown_page(markdown_file, title):
                            content=content,
                            markdown_file=markdown_file,
                            markdown_content=markdown_content,
-                           edit=edit,
+                           edit=False,
                            history=None,
                            drafts=None)
 
