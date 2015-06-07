@@ -9,6 +9,7 @@ from flask import render_template
 from flask import Markup
 from flask import request
 from flask import session
+from flask import redirect
 
 app = Flask(__name__)
 app.secret_key = "12345" # for session cookies
@@ -23,6 +24,52 @@ def setup_logging():
 
 script_dir = os.path.dirname(sys.argv[0])
 markdown_dir = os.path.join(script_dir, "markdown")
+
+
+
+
+
+import datetime
+
+TIMESTAMP_FORMAT = "%Y%m%d_%H%M%S"
+
+class DocumentStore(object):
+
+    def __init__(self, directory):
+        self.directory = directory
+
+    def save(self, key, value):
+
+        key_history_dir = os.path.join(self.directory, "history", key)
+
+        if not os.path.isdir(key_history_dir):
+            os.mkdir(key_history_dir)
+
+        with open(os.path.join(key_history_dir, datetime.datetime.now().strftime(TIMESTAMP_FORMAT)), "w") as f:
+            f.write(value)
+        with open(os.path.join(self.directory, key), "w") as f:
+            f.write(value)
+
+    def list_history(self, key):
+        key_history_dir = os.path.join(self.directory, "history", key)
+        for filename in os.listdir(key_history_dir):
+            yield (filename, datetime.datetime.strptime(filename, TIMESTAMP_FORMAT))
+
+
+    def get_history(self, key, history_key):
+        filename = os.path.join(self.directory, "history", key, history_key)
+        save_time = datetime.datetime.strptime(history_key, TIMESTAMP_FORMAT)
+
+        with open(filename, "r") as f:
+            return (save_time, f.read())
+
+
+
+
+markdown_store = DocumentStore(markdown_dir)
+
+
+
 
 @app.route("/")
 def index():
@@ -52,12 +99,18 @@ def markdown_page(markdown_file, title):
 
     edit = request.args.get('edit')
 
+    if edit:
+        history = markdown_store.list_history(markdown_file)
+    else:
+        history = None
+
     return render_template("markdown.html",
                            title=title,
                            content=content,
                            markdown_file=markdown_file,
                            markdown_content=markdown_content,
-                           edit=edit)
+                           edit=edit,
+                           history=history)
 
 @app.route("/news-and-bio")
 def news_and_bio():
@@ -95,8 +148,34 @@ def save_draft():
     app.logger.info(markdown_file)
     app.logger.info(markdown_content)
 
+    #markdown_dir
+
     return ""
 
+@app.route("/save", methods=['POST'])
+def save():
+    markdown_file = request.form["markdown_file"]
+    markdown_content = request.form["markdown_content"]
+    #request.form['foo']
+    app.logger.info(markdown_file)
+    #app.logger.info(markdown_content)
+
+    markdown_store.save(markdown_file, markdown_content)
+
+    return redirect(request.form["url_from"])
+
+@app.route("/history/<markdown_file>/<history_key>")
+def markdown_history(markdown_file, history_key):
+    (save_time, markdown_content) = markdown_store.get_history(markdown_file, history_key)
+    history = markdown_store.list_history(markdown_file)
+
+    return render_template("markdown.html",
+                           title="%s - saved - %s" % (markdown_file, save_time),
+                           content=None,
+                           markdown_file=markdown_file,
+                           markdown_content=markdown_content,
+                           edit=True,
+                           history=history)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
