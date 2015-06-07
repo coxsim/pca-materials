@@ -10,6 +10,7 @@ from flask import Markup
 from flask import request
 from flask import session
 from flask import redirect
+from flask.helpers import url_for
 
 app = Flask(__name__)
 app.secret_key = "12345" # for session cookies
@@ -104,19 +105,15 @@ def is_admin(user):
     return user == "coxsim"
 
 def markdown_page(markdown_file, title):
+    edit = request.args.get('edit')
+
+    if edit:
+        return redirect(url_for("edit", markdown_file=markdown_file))
+
     with open(os.path.join(markdown_dir, markdown_file)) as f:
         markdown_content = f.read()
 
     content = Markup(markdown.markdown(markdown_content))
-
-    edit = request.args.get('edit')
-
-    if edit:
-        history = markdown_store.list_history(markdown_file)
-        drafts = markdown_store.list_history("%s.draft" % markdown_file)
-    else:
-        history = None
-        drafts = None
 
     return render_template("markdown.html",
                            title=title,
@@ -124,8 +121,8 @@ def markdown_page(markdown_file, title):
                            markdown_file=markdown_file,
                            markdown_content=markdown_content,
                            edit=edit,
-                           history=history,
-                           drafts=drafts)
+                           history=None,
+                           drafts=None)
 
 @app.route("/news-and-bio")
 def news_and_bio():
@@ -155,25 +152,35 @@ def expert_witness():
 def contact():
     return markdown_page("contact.md", "Contact Details")
 
-@app.route("/markdown/<markdown_file>/draft", methods=['POST'])
-def save_draft(markdown_file):
-    markdown_content = request.form["markdown_content"]
-    #app.logger.info(markdown_file)
-    #app.logger.info(markdown_content)
 
-    markdown_store.save("%s.draft" % markdown_file, markdown_content)
+@app.route("/markdown/<markdown_file>", methods=['GET'])
+def edit(markdown_file):
+    with open(os.path.join(markdown_dir, markdown_file)) as f:
+        markdown_content = f.read()
 
-    return ""
+    history = markdown_store.list_history(markdown_file)
+    drafts = markdown_store.list_history("%s.draft" % markdown_file)
+
+    return render_template("markdown.html",
+                           title="Edit %s" % markdown_file,
+                           content=None,
+                           markdown_file=markdown_file,
+                           markdown_content=markdown_content,
+                           edit=True,
+                           history=history,
+                           drafts=drafts)
 
 @app.route("/markdown/<markdown_file>", methods=['POST'])
 def save(markdown_file):
     markdown_content = request.form["markdown_content"]
-    #app.logger.info(markdown_file)
-    #app.logger.info(markdown_content)
-
     markdown_store.save(markdown_file, markdown_content)
+    return redirect(url_for("edit", markdown_file=markdown_file))
 
-    return redirect(request.form["url_from"])
+@app.route("/markdown/<markdown_file>/draft", methods=['POST'])
+def save_draft(markdown_file):
+    markdown_content = request.form["markdown_content"]
+    markdown_store.save("%s.draft" % markdown_file, markdown_content)
+    return ""
 
 @app.route("/markdown/<markdown_file>/<history_key>")
 def markdown_history(markdown_file, history_key):
