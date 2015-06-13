@@ -48,7 +48,7 @@ $(function() {
                 <h3>Drafts</h3>
                 <ul>
                     {% for (history_key, history_date) in drafts %}
-                    <li><a href="{{url_for('markdown_history', markdown_file=markdown_file, history_key=history_key)}}">{{history_date}}</a></li>
+                    <li><a href="{{url_for('markdown_draft_history', markdown_file=markdown_file, history_key=history_key)}}">{{history_date}}</a></li>
                     {% endfor %}
                 </ul>
             </p>

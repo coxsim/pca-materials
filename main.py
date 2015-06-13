@@ -105,7 +105,7 @@ def markdown_page(markdown_file, title):
     if edit:
         return redirect(url_for("edit", markdown_file=markdown_file))
 
-    with open(os.path.join(markdown_dir, markdown_file)) as f:
+    with open(os.path.join(markdown_dir, "%s.md" % markdown_file)) as f:
         markdown_content = f.read()
 
     content = Markup(markdown.markdown(markdown_content))
@@ -122,46 +122,46 @@ def markdown_page(markdown_file, title):
 
 @app.route("/news-and-bio")
 def news_and_bio():
-    return markdown_page("news-and-bio.md", "News & Bio")
+    return markdown_page("news-and-bio", "News & Bio")
 
 
 @app.route("/multilayer-polymer-constructs")
 def multilayer_polymer_constructs():
-    return markdown_page("multilayer-polymer-constructs.md", "Multilayer Polymer Constructs")
+    return markdown_page("multilayer-polymer-constructs", "Multilayer Polymer Constructs")
 
 
 @app.route("/multilayer-dies")
 def multilayer_dies():
-    return markdown_page("multilayer-dies.md", "Multilayer Dieheads")
+    return markdown_page("multilayer-dies", "Multilayer Dieheads")
 
 
 @app.route("/monolayer-dies")
 def monolayer_dies():
-    return markdown_page("monolayer-dies.md", "Monolayer Dieheads")
+    return markdown_page("monolayer-dies", "Monolayer Dieheads")
 
 
 @app.route("/commissioning")
 def commissioning():
-    return markdown_page("commissioning.md", "Commissioning")
+    return markdown_page("commissioning", "Commissioning")
 
 
 @app.route("/expert-witness")
 def expert_witness():
-    return markdown_page("expert_witness.md", "Expert Witness")
+    return markdown_page("expert-witness", "Expert Witness")
 
 
 @app.route("/contact")
 def contact():
-    return markdown_page("contact.md", "Contact Details")
+    return markdown_page("contact", "Contact Details")
 
 
-@app.route("/markdown/<markdown_file>", methods=['GET'])
+@app.route("/<markdown_file>/markdown", methods=['GET'])
 def edit(markdown_file):
-    with open(os.path.join(markdown_dir, markdown_file)) as f:
+    with open(os.path.join(markdown_dir, "%s.md" % markdown_file)) as f:
         markdown_content = f.read()
 
-    history = markdown_store.list_history(markdown_file)
-    drafts = markdown_store.list_history("%s.draft" % markdown_file)
+    history = markdown_store.list_history("%s.md" % markdown_file)
+    drafts = markdown_store.list_history("%s.draft.md" % markdown_file)
 
     return render_template("markdown.html",
                            title="Edit %s" % markdown_file,
@@ -173,25 +173,36 @@ def edit(markdown_file):
                            drafts=drafts)
 
 
-@app.route("/markdown/<markdown_file>", methods=['POST'])
+@app.route("/<markdown_file>/markdown", methods=['POST'])
 def save(markdown_file):
     markdown_content = request.form["markdown_content"]
-    markdown_store.save(markdown_file, markdown_content)
-    return redirect(url_for("edit", markdown_file=markdown_file))
+    markdown_store.save("%s.md" % markdown_file, markdown_content)
+    return redirect("/%s" % markdown_file)
 
 
-@app.route("/markdown/<markdown_file>/draft", methods=['POST'])
+@app.route("/<markdown_file>/markdown/draft", methods=['POST'])
 def save_draft(markdown_file):
     markdown_content = request.form["markdown_content"]
-    markdown_store.save("%s.draft" % markdown_file, markdown_content)
+    markdown_store.save("%s.draft.md" % markdown_file, markdown_content)
     return ""
 
 
-@app.route("/markdown/<markdown_file>/<history_key>")
+@app.route("/<markdown_file>/markdown/<history_key>")
 def markdown_history(markdown_file, history_key):
-    (save_time, markdown_content) = markdown_store.get_history(markdown_file, history_key)
-    history = markdown_store.list_history(markdown_file)
-    drafts = markdown_store.list_history("%s.draft" % markdown_file)
+    return __markdown_history(markdown_file, history_key, draft=False)
+
+
+@app.route("/<markdown_file>/markdown/draft/<history_key>")
+def markdown_draft_history(markdown_file, history_key):
+    return __markdown_history(markdown_file, history_key, draft=True)
+
+
+@app.route("/<markdown_file>/markdown/draft/<history_key>")
+def __markdown_history(markdown_file, history_key, draft):
+
+    (save_time, markdown_content) = markdown_store.get_history("%s%s.md" % (markdown_file, ".draft" if draft else ""), history_key)
+    history = markdown_store.list_history("%s.md" % markdown_file)
+    drafts = markdown_store.list_history("%s.draft.md" % markdown_file)
 
     return render_template("markdown.html",
                            title="%s - saved - %s" % (markdown_file, save_time),
