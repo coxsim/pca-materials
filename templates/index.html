@@ -9,6 +9,10 @@
             {{contents}}
             <!-- TODO: url_for -->
             <p><a href="/{{section}}">More &raquo;</a></p>
+
+            {% if session.is_admin %}
+            <p><a href="{{url_for('edit', markdown_file='%s-summary' % section)}}">Edit</a></p>
+            {% endif %}
         </div>
         {% endfor %}
     </div>

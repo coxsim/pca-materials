@@ -179,7 +179,13 @@ def edit(markdown_file):
 def save(markdown_file):
     markdown_content = request.form["markdown_content"]
     markdown_store.save("%s.md" % markdown_file, markdown_content)
-    return redirect("/%s" % markdown_file)
+
+    if markdown_file.endswith("-summary"):
+        target = url_for("index")
+    else:
+        target = "/%s" % markdown_file
+
+    return redirect(target)
 
 
 @app.route("/<markdown_file>/markdown/draft", methods=['POST'])
