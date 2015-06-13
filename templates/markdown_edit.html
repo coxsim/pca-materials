@@ -5,8 +5,6 @@
       <div class="row-fluid">
         <div class="span1"></div>
         <div class="span10">
-            {% if edit %}
-
             <script>
 $(function() {
     $("#markdown_content").autoSave(function() {
@@ -53,14 +51,6 @@ $(function() {
                 </ul>
             </p>
 
-            {% else %}
-
-            {% if session.is_admin %}
-            <p><a href="{{url_for('edit', markdown_file=markdown_file)}}">Edit</a></p>
-            {% endif %}
-
-            {{content}}
-            {% endif %}
         </div>
         <div class="span1"></div>
       </div>

@@ -105,7 +105,7 @@ def markdown_page(markdown_file, title):
 
     content = Markup(markdown.markdown(markdown_content))
 
-    return render_template("markdown.html",
+    return render_template("markdown_render.html",
                            title=title,
                            content=content,
                            markdown_file=markdown_file,
@@ -158,7 +158,7 @@ def edit(markdown_file):
     history = markdown_store.list_history("%s.md" % markdown_file)
     drafts = markdown_store.list_history("%s.draft.md" % markdown_file)
 
-    return render_template("markdown.html",
+    return render_template("markdown_edit.html",
                            title="Edit %s" % markdown_file,
                            content=None,
                            markdown_file=markdown_file,
@@ -199,7 +199,7 @@ def __markdown_history(markdown_file, history_key, draft):
     history = markdown_store.list_history("%s.md" % markdown_file)
     drafts = markdown_store.list_history("%s.draft.md" % markdown_file)
 
-    return render_template("markdown.html",
+    return render_template("markdown_edit.html",
                            title="%s - saved - %s" % (markdown_file, save_time),
                            content=None,
                            markdown_file=markdown_file,
