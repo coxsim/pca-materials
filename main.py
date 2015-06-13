@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 __author__ = 'simon'
 
 import os
@@ -10,7 +12,7 @@ from flask import Markup
 from flask import request
 from flask import session
 from flask import redirect
-from flask.helpers import url_for
+from flask.helpers import url_for, make_response
 
 app = Flask(__name__)
 app.secret_key = "12345"  # for session cookies
@@ -27,6 +29,7 @@ def setup_logging():
 
 script_dir = os.path.dirname(sys.argv[0])
 markdown_dir = os.path.join(script_dir, "markdown")
+users_file = os.path.join(script_dir, "users.csv")
 
 import datetime
 
@@ -65,8 +68,27 @@ class DocumentStore(object):
             return (save_time, f.read())
 
 
-markdown_store = DocumentStore(markdown_dir)
+from csv import DictReader, DictWriter
 
+User = namedtuple("User", "username,password,is_admin")
+
+class UserStore(object):
+
+    def __init__(self, filename):
+        with open(filename, "r") as f:
+            users = DictReader(f)
+            self.users = {r["username"] : User(r["username"], r["password"], r["is_admin"] == "True") for r in users}
+
+    def get(self, k, d=None):
+        return self.users.get(k, d)
+
+    def __getitem__(self, item):
+        return self.users[item]
+
+
+
+markdown_store = DocumentStore(markdown_dir)
+user_store = UserStore(users_file)
 
 @app.route("/")
 def index():
@@ -83,13 +105,24 @@ def index():
 def login():
     if request.form:
         username = request.form["username"]
-        session["username"] = username
-        session["is_admin"] = is_admin(username)
-        message = "Logged in as %s" % username
+
+        user = user_store.get(username)
+        # TODO: hash
+        if user and user.password == request.form["password"]:
+            session["username"] = user.username
+            session["is_admin"] = user.is_admin
+
+            message = "Logged in as %s" % username
+            message_level = "success"
+        else:
+            # TODO: HTTP status code for not authorized
+            message_level = "error"
+            message = "Invalid login/password"
     else:
+        message_level = None
         message = None
 
-    return render_template("login.html", message=message)
+    return render_template("login.html", message_level=message_level, message=message)
 
 
 @app.route("/logout")

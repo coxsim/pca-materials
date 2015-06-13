@@ -7,7 +7,7 @@
           <h2>Login</h2>
 
             {% if message %}
-            <div id="msg" class="alert alert-block alert-success">{{message}}</div>
+            <div id="msg" class="alert alert-block alert-{{message_level}}">{{message}}</div>
 
             {% endif %}
 
