@@ -100,11 +100,6 @@ def is_admin(user):
 
 
 def markdown_page(markdown_file, title):
-    edit = request.args.get('edit')
-
-    if edit:
-        return redirect(url_for("edit", markdown_file=markdown_file))
-
     with open(os.path.join(markdown_dir, "%s.md" % markdown_file)) as f:
         markdown_content = f.read()
 
