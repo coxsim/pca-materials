@@ -70,7 +70,13 @@ markdown_store = DocumentStore(markdown_dir)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+
+    sections = [["multilayer-polymer-constructs", "multilayer-dies", "monolayer-dies"],
+                ["commissioning", "expert-witness", "contact"]]
+
+    section_contents = map(lambda row: map(lambda section: (section, __fetch_markdown_content("%s-summary" % section)), row), sections)
+
+    return render_template("index.html", section_contents=section_contents)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -98,18 +104,19 @@ def logout():
 def is_admin(user):
     return user == "coxsim"
 
-
-def markdown_page(markdown_file, title):
+def __fetch_markdown_content(markdown_file):
     with open(os.path.join(markdown_dir, "%s.md" % markdown_file)) as f:
         markdown_content = f.read()
 
-    content = Markup(markdown.markdown(markdown_content))
+    return Markup(markdown.markdown(markdown_content))
+
+def markdown_page(markdown_file, title):
+    content = __fetch_markdown_content(markdown_file)
 
     return render_template("markdown_render.html",
                            title=title,
                            content=content,
                            markdown_file=markdown_file,
-                           markdown_content=markdown_content,
                            edit=False,
                            history=None,
                            drafts=None)

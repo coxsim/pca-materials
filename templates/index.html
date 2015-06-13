@@ -2,39 +2,16 @@
 {% block title %}PCA Materials{% endblock %}
 {% block body %}
 
+    {% for row in section_contents %}
     <div class="row-fluid">
+        {% for (section, contents) in row %}
         <div class="span4">
-          <h2>Multilayer polymer constructions</h2>
-          <p>Wide experience in the use and construction of multilayer polymer construction.</p>
-          <p><a href="{{url_for('multilayer_polymer_constructs')}}">More &raquo;</a></p>
+            {{contents}}
+            <!-- TODO: url_for -->
+            <p><a href="/{{section}}">More &raquo;</a></p>
         </div>
-        <div class="span4">
-          <h2>Multilayer die design</h2>
-          <p>Compact dies designed for any number of layers or coating producing tubular parisons.</p>
-          <p><a href="multidd.html">More &raquo;</a></p>
-        </div>
-        <div class="span4">
-          <h2>Monolayer die design</h2>
-          <p>Conventional spider dies, or crosshead dies designed for typical monolayer structures using the rheological properties of the polymer.</p>
-          <p><a href="#">More &raquo;</a></p>
-        </div>
-      </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
 
-      <div class="row-fluid">
-        <div class="span4">
-          <h2>Commissioning of full production lines</h2>
-          <p>Dr Peter Cox has over 30 years of experience in the design, manufacture and commissioning of polymer processing equipment.  Dr Cox has also carried out many trouble shoooting visits to sites to advise corrections to processing condititons or diehead/machinery geometry.</p>
-          <p><a href="#">More &raquo;</a></p>
-        </div>
-        <div class="span4">
-          <h2>Expert witness</h2>
-          <p>Dr Peter Cox has provided services as an expert witness in several cases for both the prosecution and defence.</p>
-          <p><a href="#">More &raquo;</a></p>
-        </div>
-        <div class="span4">
-          <h2>TODO</h2>
-          <p>Lauren Ipsum: A Story About Computer Science and Other Improbable Things - Kindle edition by Carlos Bueno. Download it once and read it on your Kindle ...</p>
-          <p><a href="#">More &raquo;</a></p>
-        </div>
-      </div>
 {% endblock %}
