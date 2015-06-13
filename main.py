@@ -122,17 +122,17 @@ def markdown_page(markdown_file, title):
 
 @app.route("/news-and-bio")
 def news_and_bio():
-    return markdown_page("news_bio.md", "News & Bio")
+    return markdown_page("news-and-bio.md", "News & Bio")
 
 
 @app.route("/multilayer-polymer-constructs")
 def multilayer_polymer_constructs():
-    return markdown_page("multipc.md", "Multilayer Polymer Constructs")
+    return markdown_page("multilayer-polymer-constructs.md", "Multilayer Polymer Constructs")
 
 
 @app.route("/multilayer-dies")
 def multilayer_dies():
-    return markdown_page("multidd.md", "Multilayer Dieheads")
+    return markdown_page("multilayer-dies.md", "Multilayer Dieheads")
 
 
 @app.route("/monolayer-dies")
@@ -142,7 +142,7 @@ def monolayer_dies():
 
 @app.route("/commissioning")
 def commissioning():
-    return markdown_page("commission.md", "Commissioning")
+    return markdown_page("commissioning.md", "Commissioning")
 
 
 @app.route("/expert-witness")
