@@ -1,4 +1,6 @@
 
 templates/base.html.gdoc
+markdown/history/*
+markdown/*.draft.md
 
 *.pyc
