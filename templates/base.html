@@ -94,14 +94,12 @@
     <![endif]-->
 
     <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
-    <script src="http://code.jquery.com/jquery-1.11.2.js"></script>
-
-      <!--<script src="jquery.js"></script>-->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">-->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">-->
+      <!--<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">-->
+                    <!--<link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+                                   <!--<link rel="shortcut icon" href="../assets/ico/favicon.png">-->
+    <script src="/static/js/jquery-1.11.3.js"></script>
     <script src="/static/js/jquery.autoSave.min.js"></script>
 
 
@@ -140,6 +138,17 @@
       </div>
       -->
 
+
+        {% if session.username %}
+        <div class="span2"></div>
+        <div class="span8 text-right">
+            <p>Logged in as {{session.username}}, admin: {{session.is_admin}}, <a href="{{url_for('logout')}}">logout</a></p>
+            <hr/>
+        </div>
+        <div class="span2"></div>
+        {% endif %}
+
+
       <div class="row-fluid">
         <div class="span12 text-center">
         <ul class="nav nav-tabs">
@@ -165,10 +174,6 @@
       <hr>
 
       <div class="footer">
-        {% if session.username %}
-        <p>Logged in as {{session.username}}, admin: {{session.is_admin}}, <a href="{{url_for('logout')}}">logout</a></p>
-        <hr/>
-        {% endif %}
 
         <p>&copy; Peter Cox Associates 2015</p>
 
@@ -179,19 +184,19 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/static/bootstrap/js/jquery.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-transition.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-alert.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-modal.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-dropdown.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-scrollspy.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-tab.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-tooltip.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-popover.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-button.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-collapse.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-carousel.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-typeahead.js"></script>
+    <!--<script src="/static/bootstrap/js/jquery.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-transition.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-alert.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-modal.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-dropdown.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-scrollspy.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-tab.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-tooltip.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-popover.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-button.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-collapse.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-carousel.js"></script>-->
+    <!--<script src="/static/bootstrap/js/bootstrap-typeahead.js"></script>-->
 
   </body>
 </html>

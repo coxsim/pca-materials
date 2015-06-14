@@ -6,13 +6,17 @@ import os
 import sys
 import markdown
 import logging
+import hashlib
+
 from flask import Flask
 from flask import render_template
 from flask import Markup
 from flask import request
 from flask import session
 from flask import redirect
-from flask.helpers import url_for, make_response
+from flask import jsonify
+from flask.helpers import url_for
+
 
 app = Flask(__name__)
 app.secret_key = "12345"  # for session cookies
@@ -94,36 +98,42 @@ user_store = UserStore(users_file)
 def index():
 
     sections = [["multilayer-polymer-constructs", "multilayer-dies", "monolayer-dies"],
-                ["commissioning", "expert-witness", "contact"]]
+                ["commissioning", "expert-witness", "news-and-bio"]]
 
     section_contents = map(lambda row: map(lambda section: (section, __fetch_markdown_content("%s-summary" % section)), row), sections)
 
     return render_template("index.html", section_contents=section_contents)
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET'])
 def login():
-    if request.form:
-        username = request.form["username"]
+    return render_template("login.html", message_level=None, message=None)
 
-        user = user_store.get(username)
-        # TODO: hash
-        if user and user.password == request.form["password"]:
-            session["username"] = user.username
-            session["is_admin"] = user.is_admin
 
-            message = "Logged in as %s" % username
-            message_level = "success"
-        else:
-            # TODO: HTTP status code for not authorized
-            message_level = "error"
-            message = "Invalid login/password"
+@app.route("/login", methods=['POST'])
+def login_post():
+    username = request.form["username"]
+
+    user = user_store.get(username)
+
+    m = hashlib.md5()
+    m.update(user.password)
+    digest = m.hexdigest()
+
+    if user and digest == request.form["password_md5"]:
+        session["username"] = user.username
+        session["is_admin"] = user.is_admin
+
+        message = "Logged in as %s" % username
+        message_level = "success"
     else:
-        message_level = None
-        message = None
+        del session["username"]
+        del session["is_admin"]
 
-    return render_template("login.html", message_level=message_level, message=message)
+        message = "Invalid login/password"
+        message_level = "error"
 
+    return jsonify(message_level=message_level, message=message)
 
 @app.route("/logout")
 def logout():
