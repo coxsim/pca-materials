@@ -97,8 +97,8 @@ user_store = UserStore(users_file)
 @app.route("/")
 def index():
 
-    sections = [["multilayer-polymer-constructs", "multilayer-dies", "monolayer-dies"],
-                ["commissioning", "expert-witness", "news-and-bio"]]
+    sections = [["news-and-bio", "expert-witness", "commissioning"],
+                ["multilayer-polymer-constructs", "multilayer-dies", "monolayer-dies"]]
 
     section_contents = map(lambda row: map(lambda section: (section, __fetch_markdown_content("%s-summary" % section)), row), sections)
 
