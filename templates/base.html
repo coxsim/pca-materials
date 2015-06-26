@@ -36,7 +36,7 @@
         text-align: center;
       }
       .jumbotron h1 {
-        font-size: 100px;
+        font-size: 90px;
         line-height: 1;
       }
       .jumbotron .lead {
@@ -90,7 +90,7 @@
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
+      <!--<script src="../assets/js/html5shiv.js"></script>-->
     <![endif]-->
 
     <!-- Fav and touch icons -->
@@ -119,7 +119,7 @@
         </div>
 
         <!--<p class="lead">Expertise available in materials engineering and many aspects of polymer technology.</p>-->
-          <p class="lead">Experts in materials engineering and polymer technology.</p>
+          <p class="lead">Experts in materials engineering and multilayer polymer technology.</p>
 
 
           <!--
@@ -154,11 +154,11 @@
         <ul class="nav nav-tabs">
           {% for (func, text) in [("index", "Home"),
                                   ("news_and_bio", "News & Bio"),
+                                  ("expert_witness", "Expert Witness"),
+                                  ("commissioning", "Commissioning"),
                                   ("multilayer_polymer_constructs", "Multilayer Constructs"),
                                   ("multilayer_dies", "Multilayer Dies"),
                                   ("monolayer_dies", "Monolayer Dies"),
-                                  ("commissioning", "Commissioning"),
-                                  ("expert_witness", "Expert Witness"),
                                   ("contact", "Contact")] %}
             <li{% if request.path == url_for(func) %} class="active"{% endif %}><a href="{{url_for(func)}}">{{text}}</a></li>
           {% endfor %}
