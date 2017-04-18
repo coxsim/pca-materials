@@ -13,3 +13,6 @@ Drawings can be supplied in AutoCad form or arrangements made for manufacture.
 
 <legend>Typical tube extrusion multilayer diehead</legend>
 ![Typical tube extrusion multilayer diehead](/static/images/1238pap3-smaller.gif "Typical tube extrusion multilayer diehead")
+
+<legend>Typical blow moulding multilayer diehead</legend>
+![Typical blow moulding multilayer diehead](/static/images/MUSH_head2-smaller.jpg "Typical blow moulding multilayer diehead")

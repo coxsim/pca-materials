@@ -6,8 +6,17 @@ Recent Publications
 News
 ====
 
-#### 2015
+#### 2016
 
+**October 21st/26th** - Dr Peter Cox will be at the K2016 exhibition on the Plastics Consultancy Network stand 5A28 (BPF British Pavilion)
+
+**26th September 2016** - Dr Peter Cox attended the international Plasticity Forum at the Royal Society of Arts, London on the topic of Design and the Circular Economy
+
+**16th March 2016** - Dr Peter Cox presented a paper on "The Role of Multilayer Plastics Packaging in Sustainability" at the East Midlands Packaging Society meeting on "Pack to the Future 6" at the University of Birmingham.
+
+Co-extrusion and Laminated Multilayer Structures courses at Smithers Rapra, Shawbury were held on 26th/27th April and 20th/21st September
+
+#### 2015
 
 **February** - Dates for the Co-extrusion and Laminated Multilayer Structures courses at Smithers Rapra, Shawbury are 3rd/4th March and 22nd/23rd September.
 
