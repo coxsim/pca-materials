@@ -49,7 +49,7 @@ class DocumentStore(object):
         key_history_dir = os.path.join(self.directory, "history", key)
 
         if not os.path.isdir(key_history_dir):
-            os.mkdir(key_history_dir)
+            os.makedirs(key_history_dir)
 
         with open(os.path.join(key_history_dir, datetime.datetime.now().strftime(TIMESTAMP_FORMAT)), "w") as f:
             f.write(value)
